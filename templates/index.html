@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add person page
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+    <form method = "post" style="text-align:center">
+    <h1 style="text-align:center"> At this page we will add people to our database</h1>
+    <input name="email" required placeholder="Email (required)">
+    <input name="telephone_number" required placeholder="Tel. number (required)"></p>
+    <input name="message" placeholder="Message"></p>
+    <input type="submit" class="btn btn-success" value="Add user"></p>
+    </form>
+    <p style="text-align: center"> <a href="/view"> <button>View users</button> </a> </p>
+    </div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+View page
+{% endblock %}
+
+{% block body %}
+    <form method="GET">
+    <input type="text" class="form-control" placeholder="Search" name="search" value="{{ request.args.get('search','') }}">
+    <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+
+    <h1 style="text-align: center">Here we can see users from database</h1>
+    {% for elements in user %}
+        <div>
+            <h3>{{ elements.id }} {{ elements.email }}
+                {{ elements.telephone_number }} {{ elements.message }}</h3>
+        </div>
+    {% endfor %}
+    <p style="text-align: center"><a href="/"> <button>To the homepage</button> </a> </p>
+{% endblock %}
