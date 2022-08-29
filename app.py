@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+import json
 
 '''Initializing application and DB (SQLite)'''
 app = Flask(__name__)
@@ -28,9 +29,10 @@ def index():
     And if it's necessary add new user in DB
     """
     if request.method == "POST":
-        email = request.form['email']
-        tel = request.form['telephone_number']
-        message = request.form['message']
+        data = request.json
+        email = data[0]['email']
+        tel = data[0]['telephone_number']
+        message = data[0]['message']
 
         user = User(email=email, telephone_number=tel, message=message)
         try:
@@ -52,7 +54,7 @@ def view():
         user = User.query.filter(User.email.contains(search) | User.telephone_number.contains(search)).all()
     else:
         user = User.query.all()
-    return render_template("view.html", user=user)  # передаем в шаблон список
+    return render_template("view.html", user=user)
 
 
 if __name__ == "__app__":

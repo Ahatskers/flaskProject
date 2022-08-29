@@ -5,14 +5,62 @@ Add person page
 {% endblock %}
 
 {% block body %}
+
     <div class="container mt-5">
-    <form method = "post" style="text-align:center">
+    <form style="text-align:center">
     <h1 style="text-align:center"> At this page we will add people to our database</h1>
-    <input name="email" required placeholder="Email (required)">
-    <input name="telephone_number" required placeholder="Tel. number (required)"></p>
-    <input name="message" placeholder="Message"></p>
-    <input type="submit" class="btn btn-success" value="Add user"></p>
+    <input id="email" name="email" required placeholder="Email (required)">
+    <input id="telephone_number" name="telephone_number" required placeholder="Tel. number (required)"></p>
+    <input id="message" name="message" placeholder="Message"></p>
+ <div class="formBox">
+            <button id="btn">Add User</button>
+        </div>
     </form>
     <p style="text-align: center"> <a href="/view"> <button>View users</button> </a> </p>
     </div>
+    <h5>Json sent to the backend:</h5>
+<div id="msg">
+            <pre></pre>
+        </div>
+    <script>
+        let users = [];
+        const addUser = (ev)=>{
+            ev.preventDefault();  //to stop the form submitting
+            let user = {
+                email: document.getElementById('email').value,
+                telephone_number: document.getElementById('telephone_number').value,
+                message: document.getElementById('message').value
+            }
+            users.push(user);
+            document.forms[0].reset(); // to clear the form for the next entries
+            //document.querySelector('form').reset();
+
+            //for display purposes only
+            console.warn('added' , {users} );
+            let pre = document.querySelector('#msg pre');
+            let data = '\n' + JSON.stringify(users, '\t', 2);
+            pre.textContent = data;
+            localStorage.setItem('MyUserList', JSON.stringify(users) );
+
+    fetch('http://127.0.0.1:5000/', {
+      method: 'POST', // Здесь так же могут быть GET, PUT, DELETE
+      body: JSON.stringify(users), // Тело запроса в JSON-формате
+      headers: {
+        // Добавляем необходимые заголовки
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+})
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data)
+    // {title: "foo", body: "bar", userId: 1, id: 101}
+  })
+        }
+
+        document.addEventListener('DOMContentLoaded', ()=>{
+            document.getElementById('btn').addEventListener('click', addUser);
+        });
+    </script>
+
+
 {% endblock %}
